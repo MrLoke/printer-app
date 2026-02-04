@@ -24,7 +24,7 @@ body {
   top: 20px;
   right: 20px;
   background-color: #4caf50;
-  color: white;
+  color: #fff;
   padding: 12px 20px;
   border-radius: 5px;
   font-size: 14px;
@@ -62,14 +62,15 @@ body {
 }
 
 .search-section {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .search-section label {
   display: block;
   font-size: 12px;
+  font-weight: 500;
   margin-bottom: 5px;
-  color: #111;
+  color: #000;
 }
 
 .search-input {
@@ -88,13 +89,12 @@ body {
   gap: 15px;
   margin-bottom: 15px;
   padding: 10px;
-  background-color: #f5f5f5;
   border: 1px solid #ddd;
   border-radius: 3px;
-  color: #111;
 }
 
 .filters-section label {
+  color: #000;
   display: flex;
   align-items: center;
   font-size: 12px;
@@ -104,13 +104,33 @@ body {
 .filters-section input[type="checkbox"] {
   margin-right: 5px;
   cursor: pointer;
+  outline: 1px solid #111;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+}
+
+.filters-section input[type="checkbox"]:checked {
   background-color: #fff;
+  position: relative;
+  outline: 1px solid #0078d7;
+}
+
+.filters-section input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: #000;
+  font-size: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
 }
 
 .product-list {
   flex: 1;
   border: 1px solid #999;
-  background-color: white;
+  background-color: #fff;
   overflow-y: auto;
   margin-bottom: 10px;
 }
@@ -121,6 +141,7 @@ body {
   cursor: pointer;
   font-size: 13px;
   transition: background-color 0.2s;
+  color: #000;
 }
 
 .product-item:hover {
@@ -129,13 +150,24 @@ body {
 
 .product-item.selected {
   background-color: #0078d7;
-  color: white;
+  color: #fff;
 }
 
 .gid-info {
-  font-size: 11px;
-  color: #666;
+  font-size: 13px;
+  color: #000;
   padding: 5px;
+}
+
+.gid-info label {
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.gid-info input[type="text"] {
+  background-color: #fff;
+  color: #000;
+  padding: 3px;
 }
 
 /* Prawy panel */
@@ -151,13 +183,14 @@ body {
 
 .search-button-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
 
 .btn-search {
   background-color: #e1e1e1;
   border: 1px solid #adadad;
-  color: #111;
+  color: #000;
   padding: 8px 30px;
   font-size: 13px;
   font-weight: bold;
@@ -175,7 +208,7 @@ body {
 }
 
 .product-details {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 3px;
@@ -191,13 +224,14 @@ body {
 
 .detail-row label {
   font-size: 12px;
-  color: #333;
+  font-weight: 500;
+  color: #000;
   min-width: 80px;
 }
 
 .detail-value {
   background-color: #f5f5f5;
-  color: #111;
+  color: #000;
   border: 1px solid #ccc;
   padding: 5px 10px;
   font-size: 13px;
@@ -206,9 +240,9 @@ body {
 }
 
 .detail-value-large {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #999;
-  color: #111;
+  color: #000;
   padding: 8px 15px;
   font-size: 48px;
   font-weight: bold;
@@ -229,8 +263,9 @@ body {
 .magazines-grid label {
   display: block;
   font-size: 12px;
+  font-weight: 500;
   margin-bottom: 8px;
-  color: #333;
+  color: #000;
 }
 
 .magazines {
@@ -250,9 +285,9 @@ body {
 }
 
 .mag-value {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #999;
-  color: #111;
+  color: #000;
   padding: 6px 4px;
   font-size: 13px;
   font-weight: bold;
@@ -270,7 +305,7 @@ body {
 }
 
 .label-preview-container {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 3px;
@@ -284,7 +319,7 @@ body {
 .label-preview {
   border: 2px solid #000;
   padding: 15px;
-  background-color: white;
+  background-color: #fff;
   text-align: center;
 }
 
@@ -300,7 +335,7 @@ body {
 }
 
 .print-options {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 3px;
@@ -314,14 +349,14 @@ body {
 .origin-section label {
   display: block;
   font-size: 12px;
-  margin-bottom: 8px;
-  color: #333;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #000;
 }
 
 .radio-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .radio-group label {
@@ -334,6 +369,25 @@ body {
 .radio-group input[type="radio"] {
   margin-right: 8px;
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid #333;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.radio-group input[type="radio"]:checked::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background-color: #000;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .quantity-section {
@@ -345,14 +399,13 @@ body {
 .btn-print {
   background-color: #e1e1e1;
   border: 1px solid #adadad;
-  color: #111;
+  color: #000;
   padding: 10px 35px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  flex: 1;
 }
 
 .btn-print:hover {
@@ -368,7 +421,7 @@ body {
   padding: 8px;
   border: 1px solid #999;
   background-color: #fff;
-  color: #111;
+  color: #000;
   border-radius: 2px;
   font-size: 14px;
   text-align: center;
@@ -376,14 +429,15 @@ body {
 
 .action-buttons {
   display: flex;
+  justify-content: space-between;
   gap: 10px;
 }
 
 .btn-secondary {
-  flex: 1;
   background-color: #e1e1e1;
   border: 1px solid #adadad;
-  color: #111;
+  min-width: 30%;
+  color: #000;
   font-weight: bold;
   padding: 10px;
   font-size: 13px;
@@ -408,7 +462,7 @@ body {
   padding-top: 10px;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styles */
 .product-list::-webkit-scrollbar {
   width: 12px;
 }

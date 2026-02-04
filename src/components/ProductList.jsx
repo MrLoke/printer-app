@@ -17,11 +17,11 @@ function ProductList({ products, selectedProduct, onProductSelect }) {
           style={{
             padding: "20px",
             textAlign: "center",
-            color: "#999",
-            fontSize: "12px",
+            color: "#444",
+            fontSize: "13px",
           }}
         >
-          Brak wyników. Użyj wyszukiwania.
+          Brak wyników.
         </div>
       )}
     </div>
