@@ -24,11 +24,11 @@ async function createDatabase() {
     if (connected) {
       const isWorking = await db.testConnection();
       if (isWorking) {
-        console.log("Baza danych działa prawidłowo");
+        console.log("✓ Baza danych działa prawidłowo");
       }
     }
   } catch (error) {
-    console.error("Błąd inicjalizacji bazy danych:", error);
+    console.error("✗ Błąd inicjalizacji bazy danych:", error);
   }
 }
 
@@ -37,9 +37,12 @@ function createWindow() {
     width: 1400,
     height: 900,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
+      // BEZPIECZNA KONFIGURACJA:
+      preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: false, // ✅ Wyłączony - bezpieczniejsze
+      contextIsolation: true, // ✅ Włączony - renderer odizolowany
+      enableRemoteModule: false, // ✅ Wyłączony - deprecated i niebezpieczny
+      sandbox: false, // Wyłączony dla IPC, można włączyć jeśli nie używasz Node w preload
     },
     icon: path.join(__dirname, "../public/icon.png"),
   });
@@ -143,7 +146,7 @@ ipcMain.handle("search-by-barcode", async (event, barcode) => {
     }
     console.log("📷 Wyszukiwanie po kodzie kreskowym:", barcode);
     const results = await db.searchByBarcode(barcode);
-    console.log(`Znaleziono ${results.length} produktów`);
+    console.log(`✓ Znaleziono ${results.length} produktów`);
     return results;
   } catch (error) {
     console.error("Błąd wyszukiwania po kodzie kreskowym:", error);

@@ -14,7 +14,7 @@
   },
   "build": {
     "appId": "com.etykiety.cdn",
-    "productName": "cdn-xl-etykiety",
+    "productName": "Etykiety CDN XL",
     "directories": {
       "output": "release"
     },
@@ -27,11 +27,15 @@
     }
   },
   "dependencies": {
+    "canvas": "^3.2.1",
     "electron-store": "^11.0.2",
+    "escpos": "^3.0.0-alpha.6",
+    "escpos-usb": "^3.0.0-alpha.4",
     "jsbarcode": "^3.12.3",
     "mysql2": "^3.16.3",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "serialport": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

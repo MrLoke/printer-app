@@ -15,6 +15,18 @@ export default defineConfig({
           },
         },
       },
+      {
+        entry: "electron/preload.js",
+        onstart(options) {
+          // Reload preload when it changes
+          options.reload();
+        },
+        vite: {
+          build: {
+            outDir: "dist-electron",
+          },
+        },
+      },
     ]),
     electronRenderer(),
   ],

@@ -4,22 +4,25 @@ import Barcode from "./components/Barcode";
 import ProductList from "./components/ProductList";
 import LabelPreview from "./components/LabelPreview";
 
-const { ipcRenderer } = window.require("electron");
+// Używamy bezpiecznego API z preload.js zamiast bezpośredniego ipcRenderer
+const { electronAPI } = window;
 const initialTime = Date.now();
+
+// Placeholder products
+const PLACEHOLDER_PRODUCTS = [
+  {
+    id: 1,
+    nazwa: "Klamka VENUS M1 mosiadz B/O",
+    kod: "VEN-M1-BO",
+    stan: 15,
+  },
+];
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
-  const placeholderProducts = [
-    {
-      id: 1,
-      nazwa: "Klamka VENUS M1 mosiadz B/O",
-      kod: "VEN-M1-BO",
-      stan: 15,
-    },
-  ];
-  const [products, setProducts] = useState(placeholderProducts);
+  const [products, setProducts] = useState(PLACEHOLDER_PRODUCTS);
   const [selectedProduct, setSelectedProduct] = useState(
-    placeholderProducts[0],
+    PLACEHOLDER_PRODUCTS[0],
   );
   const [filters, setFilters] = useState({
     bezEAN: false,
@@ -47,7 +50,8 @@ function App() {
   const [krajPochodzenia, setKrajPochodzenia] = useState("UE");
   const [iloscEtykiet, setIloscEtykiet] = useState(30);
 
-  const playBeep = useCallback(() => {
+  // Proste sygnały dźwiękowe (opcjonalne)
+  const playBeep = () => {
     const audioContext = new (
       window.AudioContext || window.webkitAudioContext
     )();
@@ -57,14 +61,14 @@ function App() {
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
 
-    oscillator.frequency.value = 800;
-    gainNode.gain.value = 0.1;
+    oscillator.frequency.value = 800; // Hz - wysoki dźwięk
+    gainNode.gain.value = 0.1; // Głośność
 
     oscillator.start();
-    setTimeout(() => oscillator.stop(), 100);
-  }, []);
+    setTimeout(() => oscillator.stop(), 100); // 100ms beep
+  };
 
-  const playErrorBeep = useCallback(() => {
+  const playErrorBeep = () => {
     const audioContext = new (
       window.AudioContext || window.webkitAudioContext
     )();
@@ -74,20 +78,17 @@ function App() {
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
 
-    oscillator.frequency.value = 300;
+    oscillator.frequency.value = 300; // Hz - niski dźwięk (błąd)
     gainNode.gain.value = 0.1;
 
     oscillator.start();
-    setTimeout(() => oscillator.stop(), 200);
-  }, []);
+    setTimeout(() => oscillator.stop(), 200); // 200ms beep
+  };
 
   const handleProductSelect = useCallback(async (product) => {
     setSelectedProduct(product);
     try {
-      const details = await ipcRenderer.invoke(
-        "get-product-details",
-        product.id,
-      );
+      const details = await electronAPI.getProductDetails(product.id);
       if (details && details.length > 0) {
         setProductDetails({
           kodTowaru: details[0].kod_kreskowy || "6420334000257",
@@ -113,14 +114,16 @@ function App() {
     async (barcode) => {
       console.log("📷 Zeskanowano kod kreskowy:", barcode);
 
+      // Szukaj produktu po kodzie kreskowym
       try {
-        const results = await ipcRenderer.invoke("search-by-barcode", barcode);
+        const results = await electronAPI.searchByBarcode(barcode);
 
         if (results && results.length > 0) {
           setProducts(results);
           setSelectedProduct(results[0]);
           handleProductSelect(results[0]);
 
+          // Opcjonalnie: sygnał dźwiękowy potwierdzenia
           playBeep();
         } else {
           console.warn("❌ Nie znaleziono produktu o kodzie:", barcode);
@@ -132,7 +135,7 @@ function App() {
         playErrorBeep();
       }
     },
-    [handleProductSelect, playBeep, playErrorBeep],
+    [handleProductSelect],
   );
 
   // Obsługa skanera kodów kreskowych
@@ -172,22 +175,14 @@ function App() {
     return () => window.removeEventListener("keypress", handleKeyPress);
   }, [scannerBuffer, lastKeyTime, handleBarcodeScanned]);
 
-  // Play/prompt functions moved above to avoid TDZ and duplicate definitions
-
   const handleSearch = async () => {
     try {
-      const results = await ipcRenderer.invoke(
-        "search-products",
-        searchTerm,
-        filters,
-      );
+      const results = await electronAPI.searchProducts(searchTerm, filters);
       setProducts(results);
     } catch (error) {
       console.error("Błąd wyszukiwania:", error);
     }
   };
-
-  // handleProductSelect moved earlier and wrapped with useCallback to ensure stable identity
 
   const handlePrint = async () => {
     const printData = {
@@ -198,7 +193,7 @@ function App() {
     };
 
     try {
-      const result = await ipcRenderer.invoke("save-print-history", printData);
+      const result = await electronAPI.savePrintHistory(printData);
       if (result.success) {
         alert(`Drukowanie ${iloscEtykiet} etykiet...`);
         // Tutaj dodasz logikę faktycznego drukowania
@@ -218,6 +213,10 @@ function App() {
       <div className="main-content">
         {/* Lewy panel - wyszukiwanie i lista produktów */}
         <div className="left-panel">
+          <div className="header">
+            <div className="logo">CDN XL ETYKIETY</div>
+          </div>
+
           <div className="search-section">
             <label>Nazwa produktu / Kod</label>
             <input
@@ -227,12 +226,6 @@ function App() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
-          </div>
-
-          <div className="search-button-container">
-            <button className="btn-search" onClick={handleSearch}>
-              SZUKAJ
-            </button>
           </div>
 
           <div className="filters-section">
@@ -297,14 +290,17 @@ function App() {
             onProductSelect={handleProductSelect}
           />
 
-          <div className="gid-info">
-            <label htmlFor="gidInfo">GID</label>
-            <input type="text" id="gidInfo" value="41284" readOnly disabled />
-          </div>
+          <div className="gid-info">GID: 41284</div>
         </div>
 
         {/* Prawy panel - szczegóły i drukowanie */}
         <div className="right-panel">
+          <div className="search-button-container">
+            <button className="btn-search" onClick={handleSearch}>
+              SZUKAJ
+            </button>
+          </div>
+
           <div className="product-details">
             <div className="detail-row">
               <label>Kod towaru</label>
