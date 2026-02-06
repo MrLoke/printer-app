@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS produkty (
   mag_b DECIMAL(10,2) DEFAULT 0,
   mag_e DECIMAL(10,2) DEFAULT 0,
   mag_m DECIMAL(10,2) DEFAULT 0,
-  mag_d2 DECIMAL(10,2) DEFAULT 0,
   data_utworzenia TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   data_modyfikacji TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_nazwa (nazwa),
@@ -51,7 +50,7 @@ CREATE TABLE IF NOT EXISTS historia_drukowania (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Przykładowe dane testowe
-INSERT INTO produkty (nazwa, kod, kod_kreskowy, stan, stan_mag_ol, stan_mag_l, mag_d, mag_b, mag_e, mag_m, mag_l, mag_d2, mag_o) VALUES
+INSERT INTO produkty (nazwa, kod, kod_kreskowy, stan, stan_mag_ol, stan_mag_l, mag_d, mag_b, mag_e, mag_m, mag_l, mag_o) VALUES
 ('Klamka VENUS M1 mosiadz B/O', 'VEN-M1-BO', '6420334000257', 15, 5, 3, 0, 8, 0, 0, 3, 0, 4),
 ('Klamka MARS aluminium silver', 'MAR-AL-SL', '6420334000264', 23, 10, 8, 5, 0, 0, 0, 8, 0, 10),
 ('Zamek JUPITER stal nierdzewna', 'JUP-ST-NR', '6420334000271', 45, 20, 15, 10, 0, 0, 0, 15, 0, 20),
