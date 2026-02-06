@@ -228,6 +228,12 @@ function App() {
             />
           </div>
 
+          <div className="search-button-container">
+            <button className="btn-search" onClick={handleSearch}>
+              SZUKAJ
+            </button>
+          </div>
+
           <div className="filters-section">
             <label>
               <input
@@ -290,16 +296,15 @@ function App() {
             onProductSelect={handleProductSelect}
           />
 
-          <div className="gid-info">GID: 41284</div>
+          <div className="gid-info">
+            <label htmlFor="gid-input">GID:</label>
+            <input id="gid-input" type="text" value={41284} readOnly />
+          </div>
         </div>
 
         {/* Prawy panel - szczegóły i drukowanie */}
         <div className="right-panel">
-          <div className="search-button-container">
-            <button className="btn-search" onClick={handleSearch}>
-              SZUKAJ
-            </button>
-          </div>
+          
 
           <div className="product-details">
             <div className="detail-row">

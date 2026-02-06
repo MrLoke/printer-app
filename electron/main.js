@@ -44,7 +44,7 @@ function createWindow() {
       enableRemoteModule: false, // ✅ Wyłączony - deprecated i niebezpieczny
       sandbox: false, // Wyłączony dla IPC, można włączyć jeśli nie używasz Node w preload
     },
-    icon: path.join(__dirname, "../public/icon.png"),
+    icon: path.join(__dirname, "../public/vite.svg"),
   });
 
   if (process.env.NODE_ENV === "development") {
